@@ -1,0 +1,38 @@
+cmake_minimum_required(VERSION 3.15)
+project(EXCHANGE)
+set(CMAKE_CXX_STANDARD 17)
+
+find_package(OpenGL REQUIRED)
+
+file(GLOB SOURCES
+    main.cpp
+    external/imgui/*.h
+    external/imgui/*.cpp
+)
+
+add_executable(${CMAKE_PROJECT_NAME} ${SOURCES})
+
+add_subdirectory(external/glfw)
+
+add_library("glad" "external/glad/src/glad.c")
+include_directories(
+    "external/glad/include"
+    )
+
+target_include_directories(${PROJECT_NAME} 
+            PUBLIC external/glfw/include
+)
+
+target_link_directories(${PROJECT_NAME} 
+            PRIVATE external/glfw/src
+)
+
+target_link_libraries(${PROJECT_NAME} 
+            PRIVATE
+                    glfw
+                    glad
+                    ${OPENGL_gl_LIBRARY}
+                    "-framework Cocoa"
+                    "-framework IOKit"
+                    "-framework CoreVideo"
+                    )
